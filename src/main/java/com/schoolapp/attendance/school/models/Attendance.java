@@ -11,8 +11,6 @@ public class Attendance {
 
     private Date date;
 
-    private boolean status;
-
     private List<Student> presentStudents;
 
     private List<Student> absentStudents;
@@ -38,14 +36,6 @@ public class Attendance {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public List<Student> getPresentStudents() {
