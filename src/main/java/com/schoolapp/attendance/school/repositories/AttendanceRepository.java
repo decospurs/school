@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Date;
 
 public interface AttendanceRepository extends CrudRepository<Attendance,String> {
-    Attendance findByDate(Date date);
+    Attendance findByDate(String date);
 }

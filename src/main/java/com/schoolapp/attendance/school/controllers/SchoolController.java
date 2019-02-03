@@ -51,11 +51,13 @@ class SchoolController extends Controller {
     }
 
     @GetMapping("/attendance/{date}")
-    public AttendanceResponseDTO fetchAttendance(@PathVariable(name= "date")Date attendanceDate){
+    public AttendanceResponseDTO fetchAttendance(@PathVariable(name= "date")String attendanceDate){
         AttendanceResponseDTO attendanceResponseDTO = schoolService.fetchAttendance(attendanceDate);
         updateHttpStatus(attendanceResponseDTO,response);
         return attendanceResponseDTO;
     }
+
+    //todo : find out how to parse dates
 
 
 }

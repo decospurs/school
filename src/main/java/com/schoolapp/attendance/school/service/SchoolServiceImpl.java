@@ -96,7 +96,7 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public AttendanceResponseDTO fetchAttendance(Date attendanceDate) {
+    public AttendanceResponseDTO fetchAttendance(String attendanceDate) {
         Attendance attendance = attendanceRepository.findByDate(attendanceDate);
         if (attendance == null){
             return new AttendanceResponseDTO(Status.NOT_FOUND);

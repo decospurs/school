@@ -22,5 +22,5 @@ public interface SchoolService {
 
     StudentListResponseDTO fetchStudents(Pageable pageable);
 
-    AttendanceResponseDTO fetchAttendance(Date attendanceDate);
+    AttendanceResponseDTO fetchAttendance(String attendanceDate);
 }
