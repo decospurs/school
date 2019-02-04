@@ -1,6 +1,7 @@
 package com.schoolapp.attendance.school.controllers;
 
 import com.schoolapp.attendance.school.dto.input.CreateStudentInputDTO;
+import com.schoolapp.attendance.school.dto.input.FetchAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.input.MarkAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.output.AttendanceResponseDTO;
 import com.schoolapp.attendance.school.dto.output.StudentListResponseDTO;
@@ -50,14 +51,12 @@ class SchoolController extends Controller {
         return fetchStudents;
     }
 
-    @GetMapping("/attendance/{date}")
-    public AttendanceResponseDTO fetchAttendance(@PathVariable(name= "date")String attendanceDate){
-        AttendanceResponseDTO attendanceResponseDTO = schoolService.fetchAttendance(attendanceDate);
+    @GetMapping("/attendance")
+    public AttendanceResponseDTO fetchAttendance(@RequestBody @Valid FetchAttendanceInputDTO dto){
+        AttendanceResponseDTO attendanceResponseDTO = schoolService.fetchAttendance(dto);
         updateHttpStatus(attendanceResponseDTO,response);
         return attendanceResponseDTO;
     }
-
-    //todo : find out how to parse dates
 
 
 }

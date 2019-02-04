@@ -4,25 +4,25 @@ package com.schoolapp.attendance.school.controllers;
 import com.google.gson.Gson;
 import com.schoolapp.attendance.school.dto.enums.Status;
 import com.schoolapp.attendance.school.dto.input.CreateStudentInputDTO;
+import com.schoolapp.attendance.school.dto.input.FetchAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.input.MarkAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.output.AttendanceResponseDTO;
 import com.schoolapp.attendance.school.dto.output.StudentResponseDTO;
 import com.schoolapp.attendance.school.models.extras.MarkAttendanceForm;
 import com.schoolapp.attendance.school.repositories.AttendanceRepository;
 import com.schoolapp.attendance.school.repositories.StudentRepository;
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -85,8 +85,38 @@ public class SchoolControllerTest {
     }
 
 
+
+
     @Test
     public void whenMarkAttendanceReturnsSuccessFul(){
+       AttendanceResponseDTO attendance = markAttendance();
+        assertEquals(Status.SUCCESS,attendance.getStatus());
+        assertNotNull(attendance.getAttendance());
+        assertNotNull(attendance.getAttendance().getId());
+        assertNotNull(attendance.getAttendance().getDate());
+        assertNotNull(attendance.getAttendance().getAbsentStudents());
+//        assertNotNull(attendance.getAttendance().getPresentStudents());
+//        assertEquals(attendance.getAttendance().getPresentStudents().size(),attendance.getAttendance().getNumberOfPresentStudents());
+//        assertEquals(attendance.getAttendance().getPresentStudents().size(),attendance.getAttendance().getNumberOfAbsentStudents());
+
+  //todo : rest template returning only false. figure that out
+
+    }
+
+//    @Test
+//    public void whenFetchAttendanceByDateReturnsSuccess(){
+//        AttendanceResponseDTO attendance = markAttendance();
+//        Date date = attendance.getAttendance().getDate();
+//        FetchAttendanceInputDTO fetchAttendanceInputDTO = new FetchAttendanceInputDTO();
+//        fetchAttendanceInputDTO.setDate(date);
+//        HttpEntity entity = new HttpEntity<>(fetchAttendanceInputDTO);
+//        ResponseEntity<Date> responseEntity =  restTemplate.exchange("http://localhost:8080/v1/attendance", HttpMethod.GET, entity ,Date.class);
+//        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+//
+//    }
+
+    //todo : find how to parse a date to the gregorian format #cdate . thats what is making this last test to fail the db is returning (Mon Feb 04 10:25:13 WAT 2019) but i need (2019-02-04T10:25:13.347+0100)
+    private AttendanceResponseDTO markAttendance(){
         StudentResponseDTO student1 = CreateStudent("David","Ernest");
         assertNotNullForStudentFields(student1);
         assertEquals("David",student1.getStudent().getFirstName());
@@ -145,20 +175,7 @@ public class SchoolControllerTest {
         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
 
         AttendanceResponseDTO attendance = new Gson().fromJson(responseEntity.getBody(),AttendanceResponseDTO.class);
-        assertEquals(Status.SUCCESS,attendance.getStatus());
-        assertNotNull(attendance.getAttendance());
-        assertNotNull(attendance.getAttendance().getId());
-        assertNotNull(attendance.getAttendance().getDate());
-        assertNotNull(attendance.getAttendance().getAbsentStudents());
-//        assertNotNull(attendance.getAttendance().getPresentStudents());
-//        assertEquals(attendance.getAttendance().getPresentStudents().size(),attendance.getAttendance().getNumberOfPresentStudents());
-//        assertEquals(attendance.getAttendance().getPresentStudents().size(),attendance.getAttendance().getNumberOfAbsentStudents());
-
-  //todo : rest template returning only false. figure that out
-
-
-
-
+        return attendance;
     }
 
     private boolean isPresent() {
@@ -168,6 +185,12 @@ public class SchoolControllerTest {
     private boolean isAbsent() {
         return false;
     }
+
+    @After
+   public void cleanUp(){
+       attendanceRepository.deleteAll();
+       studentRepository.deleteAll();
+   }
 
 
 }

@@ -1,6 +1,7 @@
 package com.schoolapp.attendance.school.service;
 
 import com.schoolapp.attendance.school.dto.input.CreateStudentInputDTO;
+import com.schoolapp.attendance.school.dto.input.FetchAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.input.MarkAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.output.AttendanceResponseDTO;
 import com.schoolapp.attendance.school.dto.output.StudentListResponseDTO;
@@ -22,5 +23,5 @@ public interface SchoolService {
 
     StudentListResponseDTO fetchStudents(Pageable pageable);
 
-    AttendanceResponseDTO fetchAttendance(String attendanceDate);
+    AttendanceResponseDTO fetchAttendance(FetchAttendanceInputDTO dto);
 }

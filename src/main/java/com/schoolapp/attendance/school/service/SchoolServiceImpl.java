@@ -2,6 +2,7 @@ package com.schoolapp.attendance.school.service;
 
 import com.schoolapp.attendance.school.dto.enums.Status;
 import com.schoolapp.attendance.school.dto.input.CreateStudentInputDTO;
+import com.schoolapp.attendance.school.dto.input.FetchAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.input.MarkAttendanceInputDTO;
 import com.schoolapp.attendance.school.dto.output.AttendanceResponseDTO;
 import com.schoolapp.attendance.school.dto.output.StudentListResponseDTO;
@@ -96,8 +97,8 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public AttendanceResponseDTO fetchAttendance(String attendanceDate) {
-        Attendance attendance = attendanceRepository.findByDate(attendanceDate);
+    public AttendanceResponseDTO fetchAttendance(FetchAttendanceInputDTO dto) {
+        Attendance attendance = attendanceRepository.findByDate(dto.getDate());
         if (attendance == null){
             return new AttendanceResponseDTO(Status.NOT_FOUND);
         }
